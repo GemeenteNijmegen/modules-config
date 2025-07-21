@@ -45,16 +45,12 @@ junit.xml
 !/.github/workflows/upgrade-acceptance.yml
 !/.github/pull_request_template.md
 !/test/
+!/tsconfig.json
 !/tsconfig.dev.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.json
-.jsii
-tsconfig.json
-!/API.md
-/assets/
-!/src/Construct/lambda/fillTable-function.ts
 !/.github/workflows/emergency.yml
 !/.github/workflows/auto-merge.yml
 !/.projenrc.ts

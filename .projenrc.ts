@@ -1,17 +1,15 @@
-import { GemeenteNijmegenCdkLib } from '@gemeentenijmegen/projen-project-type';
-const project = new GemeenteNijmegenCdkLib({
-  author: 'nijmegen',
-  authorAddress: 'bla@example.com',
-  repositoryUrl: 'https://github',
-  cdkVersion: '2.1.0',
+import { GemeenteNijmegenTsPackage } from '@gemeentenijmegen/projen-project-type';
+const project = new GemeenteNijmegenTsPackage({
   defaultReleaseBranch: 'main',
-  devDeps: [
+  deps: [
     '@gemeentenijmegen/projen-project-type',
     '@types/aws-lambda',
+    'constructs',
   ],
   bundledDeps: [
     '@aws-sdk/client-dynamodb',
     '@gemeentenijmegen/utils',
+    'aws-cdk-lib',
   ],
   name: 'modules-config',
   projenrcTs: true,
