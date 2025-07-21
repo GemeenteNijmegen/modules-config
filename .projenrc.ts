@@ -11,7 +11,7 @@ const project = new GemeenteNijmegenTsPackage({
     '@gemeentenijmegen/utils',
     'aws-cdk-lib',
   ],
-  name: '@gemeentenijmegen/modules-config',
+  name: '@gemeentenijmegen/config',
   projenrcTs: true,
   repository: 'GemeenteNijmegen/modules-config',
 
