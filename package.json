@@ -2,7 +2,7 @@
   "name": "modules-config",
   "repository": {
     "type": "git",
-    "url": "gemeentenijmegen/modules-config"
+    "url": "GemeenteNijmegen/modules-config"
   },
   "scripts": {
     "build": "npx projen build",
