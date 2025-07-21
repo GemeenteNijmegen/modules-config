@@ -13,7 +13,7 @@ const project = new GemeenteNijmegenTsPackage({
   ],
   name: 'modules-config',
   projenrcTs: true,
-  repository: 'gemeentenijmegen/modules-config',
+  repository: 'GemeenteNijmegen/modules-config',
 
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // packageName: undefined,  /* The "name" in package.json. */
