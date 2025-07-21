@@ -7,6 +7,9 @@
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
+    "bundle": "npx projen bundle",
+    "bundle:Construct/lambda/fillTable.lambda": "npx projen bundle:Construct/lambda/fillTable.lambda",
+    "bundle:Construct/lambda/fillTable.lambda:watch": "npx projen bundle:Construct/lambda/fillTable.lambda:watch",
     "clobber": "npx projen clobber",
     "compat": "npx projen compat",
     "compile": "npx projen compile",
@@ -29,13 +32,14 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Joost van der Borg",
-    "email": "j.van.der.borg@nijmegen.nl",
+    "name": "nijmegen",
+    "email": "bla@example.com",
     "organization": false
   },
   "devDependencies": {
     "@gemeentenijmegen/projen-project-type": "^1.11.1",
     "@stylistic/eslint-plugin": "^2",
+    "@types/aws-lambda": "^8.10.150",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.13",
     "@typescript-eslint/eslint-plugin": "^8",
@@ -43,16 +47,17 @@
     "aws-cdk-lib": "2.1.0",
     "commit-and-tag-version": "^12",
     "constructs": "10.0.5",
+    "esbuild": "^0.25.8",
     "eslint": "^9",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "jest": "^30.0.4",
     "jest-junit": "^16",
-    "jsii": "~5.8.0",
+    "jsii": "~5.6.0",
     "jsii-diff": "^1.112.0",
     "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.112.0",
-    "jsii-rosetta": "~5.8.0",
+    "jsii-rosetta": "~5.6.0",
     "projen": "^0.94.2",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
@@ -62,6 +67,14 @@
     "aws-cdk-lib": "^2.1.0",
     "constructs": "^10.0.5"
   },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.846.0",
+    "@gemeentenijmegen/utils": "^0.0.34"
+  },
+  "bundledDependencies": [
+    "@aws-sdk/client-dynamodb",
+    "@gemeentenijmegen/utils"
+  ],
   "keywords": [
     "cdk"
   ],

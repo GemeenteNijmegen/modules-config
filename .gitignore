@@ -53,6 +53,8 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
+/assets/
+!/src/Construct/lambda/fillTable-function.ts
 !/.github/workflows/emergency.yml
 !/.github/workflows/auto-merge.yml
 !/.projenrc.ts

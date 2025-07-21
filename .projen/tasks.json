@@ -42,6 +42,33 @@
       ],
       "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
     },
+    "bundle": {
+      "name": "bundle",
+      "description": "Prepare assets",
+      "steps": [
+        {
+          "spawn": "bundle:Construct/lambda/fillTable.lambda"
+        }
+      ]
+    },
+    "bundle:Construct/lambda/fillTable.lambda": {
+      "name": "bundle:Construct/lambda/fillTable.lambda",
+      "description": "Create a JavaScript bundle from src/Construct/lambda/fillTable.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/Construct/lambda/fillTable.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/Construct/lambda/fillTable.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/*"
+        }
+      ]
+    },
+    "bundle:Construct/lambda/fillTable.lambda:watch": {
+      "name": "bundle:Construct/lambda/fillTable.lambda:watch",
+      "description": "Continuously update the JavaScript bundle from src/Construct/lambda/fillTable.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/Construct/lambda/fillTable.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/Construct/lambda/fillTable.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --watch"
+        }
+      ]
+    },
     "clobber": {
       "name": "clobber",
       "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -200,7 +227,12 @@
     },
     "pre-compile": {
       "name": "pre-compile",
-      "description": "Prepare the project for compilation"
+      "description": "Prepare the project for compilation",
+      "steps": [
+        {
+          "spawn": "bundle"
+        }
+      ]
     },
     "release": {
       "name": "release",
@@ -274,13 +306,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gemeentenijmegen/projen-project-type,@types/jest,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,jest,jsii-diff,jsii-pacmak,projen,ts-jest,ts-node,typescript"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gemeentenijmegen/projen-project-type,@types/aws-lambda,@types/jest,@types/node,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,jsii-diff,jsii-pacmak,projen,ts-jest,ts-node,typescript,@aws-sdk/client-dynamodb,@gemeentenijmegen/utils"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @gemeentenijmegen/projen-project-type @stylistic/eslint-plugin @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen ts-jest ts-node typescript aws-cdk-lib constructs"
+          "exec": "yarn upgrade @gemeentenijmegen/projen-project-type @stylistic/eslint-plugin @types/aws-lambda @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen ts-jest ts-node typescript @aws-sdk/client-dynamodb @gemeentenijmegen/utils aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
