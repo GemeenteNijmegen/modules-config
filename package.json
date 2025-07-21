@@ -1,5 +1,5 @@
 {
-  "name": "@gemeentenijmegen/modules-config",
+  "name": "@gemeentenijmegen/config",
   "repository": {
     "type": "git",
     "url": "GemeenteNijmegen/modules-config"
