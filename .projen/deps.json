@@ -73,15 +73,19 @@
     },
     {
       "name": "@aws-sdk/client-dynamodb",
-      "type": "bundled"
+      "type": "peer"
     },
     {
       "name": "@gemeentenijmegen/utils",
-      "type": "bundled"
+      "type": "peer"
     },
     {
       "name": "aws-cdk-lib",
-      "type": "bundled"
+      "type": "peer"
+    },
+    {
+      "name": "constructs",
+      "type": "peer"
     },
     {
       "name": "@gemeentenijmegen/projen-project-type",
@@ -89,10 +93,6 @@
     },
     {
       "name": "@types/aws-lambda",
-      "type": "runtime"
-    },
-    {
-      "name": "constructs",
       "type": "runtime"
     }
   ],

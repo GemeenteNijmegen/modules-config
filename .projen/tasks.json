@@ -231,7 +231,7 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@aws-sdk/client-dynamodb,@gemeentenijmegen/utils,aws-cdk-lib,@gemeentenijmegen/projen-project-type,@types/aws-lambda,constructs"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@aws-sdk/client-dynamodb,@gemeentenijmegen/utils,aws-cdk-lib,constructs,@gemeentenijmegen/projen-project-type,@types/aws-lambda"
         },
         {
           "exec": "yarn install --check-files"

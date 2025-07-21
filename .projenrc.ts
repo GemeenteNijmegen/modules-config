@@ -4,12 +4,12 @@ const project = new GemeenteNijmegenTsPackage({
   deps: [
     '@gemeentenijmegen/projen-project-type',
     '@types/aws-lambda',
-    'constructs',
   ],
-  bundledDeps: [
+  peerDeps: [
     '@aws-sdk/client-dynamodb',
     '@gemeentenijmegen/utils',
     'aws-cdk-lib',
+    'constructs',
   ],
   name: '@gemeentenijmegen/config',
   projenrcTs: true,
