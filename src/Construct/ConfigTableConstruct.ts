@@ -13,10 +13,9 @@ export interface ConfigProps {
   /**
    * Policy for updates:
    * - Add (default): Only keys not yet present in the config will be added
-   * - Overwrite: All keys in config will be overwritten by the new value
    * - Ignore: Updates have no effect on the stored config object
    */
-  updatePolicy?: 'overwrite'|'add'|'ignore';
+  updatePolicy?: 'add'|'ignore';
   removalPolicy?: RemovalPolicy;
 }
 
