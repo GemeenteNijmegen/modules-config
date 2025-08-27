@@ -8,8 +8,14 @@ import { FillTableFunction } from './lambda/fillTable-function';
 
 export interface ConfigProps {
   tableName?: string;
-  encrpytionKey?: IKey;
+  encryptionKey?: IKey;
   config: any;
+  /**
+   * Policy for updates:
+   * - Add (default): Only keys not yet present in the config will be added
+   * - Ignore: Updates have no effect on the stored config object
+   */
+  updatePolicy?: 'add'|'ignore';
   removalPolicy?: RemovalPolicy;
 }
 
@@ -19,10 +25,10 @@ export class ConfigTable extends Construct {
     super(scope, id);
 
     this.table = this.createTable(props);
-    this.customFillResource(this.table, props.config, props.removalPolicy);
+    this.customFillResource(this.table, props);
   }
 
-  private customFillResource(table: Table, config: any, removalPolicy?: RemovalPolicy) {
+  private customFillResource(table: Table, props: ConfigProps) {
     const lambda = new FillTableFunction(this, 'fill', {
       environment: {
         APP_CONFIG_TABLENAME: table.tableName,
@@ -37,9 +43,10 @@ export class ConfigTable extends Construct {
     new CustomResource(this, 'config-resource', {
       serviceToken: provider.serviceToken,
       properties: {
-        initialConfig: config,
+        initialConfig: props.config,
+        updatePolicy: props.updatePolicy ?? 'add',
       },
-      removalPolicy,
+      removalPolicy: props.removalPolicy,
     });
   }
 
@@ -50,8 +57,8 @@ export class ConfigTable extends Construct {
         name: 'pk',
         type: AttributeType.STRING,
       },
-      encryptionKey: props.encrpytionKey,
-      encryption: props.encrpytionKey ? TableEncryption.CUSTOMER_MANAGED : undefined,
+      encryptionKey: props.encryptionKey,
+      encryption: props.encryptionKey ? TableEncryption.CUSTOMER_MANAGED : undefined,
       removalPolicy: props.removalPolicy,
     });
   }

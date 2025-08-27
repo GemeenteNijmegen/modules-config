@@ -1,8 +1,14 @@
 import { Config, IConfigProvider } from '../src/Config';
 
 class MockConfigProvider implements IConfigProvider {
-  constructor(private sampleObject: any) {
+  private store: Map<string, any>;
 
+  constructor(sampleObject: any) {
+    this.store = new Map();
+    for (let key of Object.keys(sampleObject)) {
+      console.debug('constructing: ', key, JSON.stringify(sampleObject[key]));
+      this.store.set(key, JSON.stringify(sampleObject[key]));
+    }
   }
   getSecret(_arn: string): Promise<any> {
     return Promise.resolve('secretvalue');
@@ -10,11 +16,14 @@ class MockConfigProvider implements IConfigProvider {
   getParameter(_arn: string): Promise<any> {
     return Promise.resolve('parametervalue');
   }
-  async get(_key: string): Promise<any> {
-    return Promise.resolve(this.sampleObject[_key]);
+  async get(key: string): Promise<any> {
+    const value = this.store.get(key);
+    console.debug('getting', key, value);
+    return Promise.resolve(value ? JSON.parse(value) : undefined);
   }
 
-  async set(_key: string, _value: any): Promise<boolean> {
+  async set(key: string, value: any): Promise<boolean> {
+    this.store.set(key, JSON.stringify(value));
     return Promise.resolve(true);
   }
 }
@@ -72,5 +81,42 @@ describe('Test config', () => {
     expect(result.another.nested.object).toBe('secretvalue');
     expect(result.another.nested.parameter).toBe('parametervalue');
     expect(result.somenestedArray[0]).toBe('secretvalue');
+  });
+});
+
+describe('Update strategy', () => {
+  test('add will only add new keys', async() => {
+    const config = new Config(new MockConfigProvider({
+      myKey: {
+        myValueOne: 'test',
+      },
+      mySecondKey: 'somevalue',
+    },
+    ));
+    const result = await config.get('myKey');
+    expect(result.myValueOne).toBe('test');
+
+    await config.addKeys({ mySecondKey: 'mynewvalue' }); //shouldnt update
+    await config.addKeys({ myThirdKey: 'mythirdvalue' }); //should add
+
+    expect(await config.get('mySecondKey')).toBe('somevalue');
+    expect(await config.get('myThirdKey')).toBe('mythirdvalue');
+  });
+
+  test('adding bulk will only add new keys', async() => {
+    const config = new Config(new MockConfigProvider({
+      myKey: {
+        myValueOne: 'test',
+      },
+      mySecondKey: 'somevalue',
+    },
+    ));
+    const result = await config.get('myKey');
+    expect(result.myValueOne).toBe('test');
+
+    await config.addKeys({ mySecondKey: 'mynewvalue', myThirdKey: 'mythirdvalue' }); //should update only mythirdkey
+
+    expect(await config.get('mySecondKey')).toBe('somevalue');
+    expect(await config.get('myThirdKey')).toBe('mythirdvalue');
   });
 });

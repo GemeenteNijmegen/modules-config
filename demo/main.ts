@@ -17,7 +17,7 @@ const configTable = new ConfigTable(stack, 'config', {
   config: {
     myKey: 'myvalue2',
     secondkey: ['an', 'array'],
-    secret: secret.secretArn
+    secret: secret.secretArn,
   },
 });
 

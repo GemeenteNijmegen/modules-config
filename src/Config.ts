@@ -31,8 +31,24 @@ export class Config {
   }
 
   async set(key: string, value: any): Promise<any> {
-    console.debug('setting key', key);
     return this.provider.set(key, value);
+  }
+
+  /**
+   * Adds keys if they don't already exist. Used by the CF custom resource for
+   * updating the config without overwriting existing configuration.
+   *
+   * @param initial config object
+   */
+  async addKeys(initial: Record<string, any>) {
+    const keys = Object.keys(initial);
+    console.log('Changing config (creating new keys)', keys);
+    for (let key of keys) {
+      const current = await this.get(key);
+      if (!current) {
+        await this.set(key, initial[key]);
+      }
+    }
   }
 
   async retrieveReferencedValue(arn: string) {
