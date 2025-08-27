@@ -5,7 +5,7 @@ class MockConfigProvider implements IConfigProvider {
 
   constructor(sampleObject: any) {
     this.store = new Map();
-    for(let key of Object.keys(sampleObject)) {
+    for (let key of Object.keys(sampleObject)) {
       console.debug('constructing: ', key, JSON.stringify(sampleObject[key]));
       this.store.set(key, JSON.stringify(sampleObject[key]));
     }
@@ -17,7 +17,7 @@ class MockConfigProvider implements IConfigProvider {
     return Promise.resolve('parametervalue');
   }
   async get(key: string): Promise<any> {
-    const value = this.store.get(key)
+    const value = this.store.get(key);
     console.debug('getting', key, value);
     return Promise.resolve(value ? JSON.parse(value) : undefined);
   }
@@ -90,14 +90,14 @@ describe('Update strategy', () => {
       myKey: {
         myValueOne: 'test',
       },
-      mySecondKey: 'somevalue'
+      mySecondKey: 'somevalue',
     },
     ));
     const result = await config.get('myKey');
     expect(result.myValueOne).toBe('test');
 
-    await config.addKeys({mySecondKey: 'mynewvalue' }); //shouldnt update
-    await config.addKeys({myThirdKey: 'mythirdvalue' }); //should add
+    await config.addKeys({ mySecondKey: 'mynewvalue' }); //shouldnt update
+    await config.addKeys({ myThirdKey: 'mythirdvalue' }); //should add
 
     expect(await config.get('mySecondKey')).toBe('somevalue');
     expect(await config.get('myThirdKey')).toBe('mythirdvalue');
@@ -108,13 +108,13 @@ describe('Update strategy', () => {
       myKey: {
         myValueOne: 'test',
       },
-      mySecondKey: 'somevalue'
+      mySecondKey: 'somevalue',
     },
     ));
     const result = await config.get('myKey');
     expect(result.myValueOne).toBe('test');
 
-    await config.addKeys({mySecondKey: 'mynewvalue', myThirdKey: 'mythirdvalue' }); //should update only mythirdkey    
+    await config.addKeys({ mySecondKey: 'mynewvalue', myThirdKey: 'mythirdvalue' }); //should update only mythirdkey
 
     expect(await config.get('mySecondKey')).toBe('somevalue');
     expect(await config.get('myThirdKey')).toBe('mythirdvalue');

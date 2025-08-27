@@ -37,7 +37,7 @@ export class Config {
   /**
    * Adds keys if they don't already exist. Used by the CF custom resource for
    * updating the config without overwriting existing configuration.
-   * 
+   *
    * @param initial config object
    */
   async addKeys(initial: Record<string, any>) {
