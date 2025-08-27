@@ -1,13 +1,13 @@
 import { GemeenteNijmegenTsPackage } from '@gemeentenijmegen/projen-project-type';
 const project = new GemeenteNijmegenTsPackage({
   defaultReleaseBranch: 'main',
-  deps: [
+  devDeps: [
     '@gemeentenijmegen/projen-project-type',
-    '@types/aws-lambda',
   ],
   peerDeps: [
     '@aws-sdk/client-dynamodb',
     '@gemeentenijmegen/utils',
+    '@types/aws-lambda',
     'aws-cdk-lib',
     'constructs',
   ],
