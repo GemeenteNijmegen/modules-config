@@ -14,7 +14,12 @@ const project = new GemeenteNijmegenTsPackage({
   name: '@gemeentenijmegen/config',
   projenrcTs: true,
   repository: 'GemeenteNijmegen/modules-config',
-
+  gitIgnoreOptions: {
+    ignorePatterns: [
+      'cdk.out',
+      'assets'
+    ]
+  }
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // packageName: undefined,  /* The "name" in package.json. */
 });
