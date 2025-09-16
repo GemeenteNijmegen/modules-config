@@ -6,7 +6,7 @@ import { Construct } from 'constructs';
 import { FillTableFunction } from './lambda/fillTable-function';
 
 
-export interface ConfigProps {
+export interface IConfigProps {
   tableName?: string;
   encryptionKey?: IKey;
   config: any;
@@ -21,14 +21,14 @@ export interface ConfigProps {
 
 export class ConfigTable extends Construct {
   public table: Table;
-  constructor(scope: Construct, id: string, props: ConfigProps) {
+  constructor(scope: Construct, id: string, props: IConfigProps) {
     super(scope, id);
 
     this.table = this.createTable(props);
     this.customFillResource(this.table, props);
   }
 
-  private customFillResource(table: Table, props: ConfigProps) {
+  private customFillResource(table: Table, props: IConfigProps) {
     const lambda = new FillTableFunction(this, 'fill', {
       environment: {
         APP_CONFIG_TABLENAME: table.tableName,
@@ -50,7 +50,7 @@ export class ConfigTable extends Construct {
     });
   }
 
-  private createTable(props: ConfigProps) {
+  private createTable(props: IConfigProps) {
     return new Table(this, 'appConfig', {
       tableName: props.tableName,
       partitionKey: {
@@ -60,6 +60,7 @@ export class ConfigTable extends Construct {
       encryptionKey: props.encryptionKey,
       encryption: props.encryptionKey ? TableEncryption.CUSTOMER_MANAGED : undefined,
       removalPolicy: props.removalPolicy,
+      pointInTimeRecovery: true,
     });
   }
 }

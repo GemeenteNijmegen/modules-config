@@ -392,8 +392,23 @@ var Config = class {
     return value;
   }
   async set(key, value) {
-    console.debug("setting key", key);
     return this.provider.set(key, value);
+  }
+  /**
+   * Adds keys if they don't already exist. Used by the CF custom resource for
+   * updating the config without overwriting existing configuration.
+   *
+   * @param initial config object
+   */
+  async addKeys(initial) {
+    const keys = Object.keys(initial);
+    console.log("Changing config (creating new keys)", keys);
+    for (let key of keys) {
+      const current = await this.get(key);
+      if (!current) {
+        await this.set(key, initial[key]);
+      }
+    }
   }
   async retrieveReferencedValue(arn) {
     if (arn.startsWith("arn:aws:secretsmanager:")) {
@@ -488,13 +503,28 @@ var DynamoDbConfigProvider = class {
 // src/Construct/lambda/fillTable.lambda.ts
 async function handler(event) {
   console.debug(JSON.stringify(event));
-  if (event.RequestType == "Create" || event.RequestType == "Update") {
+  if (event.RequestType == "Create") {
     const config = new Config();
     const initial = event.ResourceProperties.initialConfig;
     const keys = Object.keys(initial);
-    console.log("Changing config (creating / updating keys)", keys);
+    console.log("Changing config (creating keys)", keys);
     const promises = keys.map((key) => config.set(key, initial[key]));
     await Promise.all(promises);
+  } else if (event.RequestType == "Update") {
+    const policy = event.ResourceProperties.updatePolicy;
+    if (policy == "ignore") {
+      console.log("Update policy is ignore, exiting");
+      return;
+    }
+    const config = new Config();
+    const initial = event.ResourceProperties.initialConfig;
+    const keys = Object.keys(initial);
+    console.log(`Changing config (updating keys with policy ${event.ResourceProperties.updatePolicy})`, keys);
+    if (policy == "add") {
+      await config.addKeys(initial);
+    } else {
+      console.warn("no policy selected, ignoring");
+    }
   } else if (event.RequestType == "Delete") {
     console.warn("Delete requested, no action. Backing table will be deleted");
   }

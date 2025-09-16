@@ -153,6 +153,7 @@
         "devDependencies": [
           "**/test/**",
           "**/build-tools/**",
+          "src/Construct/lambda/fillTable.lambda.ts",
           ".projenrc.ts",
           "projenrc/**/*.ts"
         ],
