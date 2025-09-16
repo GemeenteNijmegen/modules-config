@@ -103,7 +103,7 @@ export interface IConfigProvider {
   getParameter(arn: string): Promise<any>;
 }
 
-export class DynamoDbConfigProvider implements IConfigProvider {
+class DynamoDbConfigProvider implements IConfigProvider {
   private client: DynamoDBClient;
   constructor(private tableName: string, client?: DynamoDBClient) {
     this.client = client ?? new DynamoDBClient();
