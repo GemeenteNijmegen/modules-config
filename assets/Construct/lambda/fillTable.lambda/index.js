@@ -378,6 +378,26 @@ var Config = class {
     }
     this.values = /* @__PURE__ */ new Map();
   }
+  /**
+   * Check if a config key exists, without retrieving all referenced params
+   *
+   * @param key the key to check
+   * @returns boolean
+   */
+  async has(key) {
+    let value = this.values.get(key);
+    if (!value) {
+      value = await this.provider.get(key);
+      this.values.set(key, value);
+    }
+    return value ? true : false;
+  }
+  /**
+   * Get the value of a config key
+   *
+   * @param key the key to get
+   * @returns the value of the config object, with references to secrets manager and parameter store resolved to their values.
+   */
   async get(key) {
     let value = this.values.get(key);
     if (!value) {
@@ -404,8 +424,7 @@ var Config = class {
     const keys = Object.keys(initial);
     console.log("Changing config (creating new keys)", keys);
     for (let key of keys) {
-      const current = await this.get(key);
-      if (!current) {
+      if (!await this.has(key)) {
         await this.set(key, initial[key]);
       }
     }
