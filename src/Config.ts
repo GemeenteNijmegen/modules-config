@@ -18,9 +18,9 @@ export class Config {
 
   /**
    * Check if a config key exists, without retrieving all referenced params
-   * 
+   *
    * @param key the key to check
-   * @returns boolean 
+   * @returns boolean
    */
   async has(key: string) {
     let value = this.values.get(key);
@@ -33,7 +33,7 @@ export class Config {
 
   /**
    * Get the value of a config key
-   * 
+   *
    * @param key the key to get
    * @returns the value of the config object, with references to secrets manager and parameter store resolved to their values.
    */

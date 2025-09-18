@@ -142,7 +142,8 @@ new Config(provider?: IConfigProvider)
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@gemeentenijmegen/config.Config.addKeys">addKeys</a></code> | Adds keys if they don't already exist. |
-| <code><a href="#@gemeentenijmegen/config.Config.get">get</a></code> | *No description.* |
+| <code><a href="#@gemeentenijmegen/config.Config.get">get</a></code> | Get the value of a config key. |
+| <code><a href="#@gemeentenijmegen/config.Config.has">has</a></code> | Check if a config key exists, without retrieving all referenced params. |
 | <code><a href="#@gemeentenijmegen/config.Config.retrieveNestedReferencedValues">retrieveNestedReferencedValues</a></code> | *No description.* |
 | <code><a href="#@gemeentenijmegen/config.Config.retrieveReferencedValue">retrieveReferencedValue</a></code> | *No description.* |
 | <code><a href="#@gemeentenijmegen/config.Config.set">set</a></code> | *No description.* |
@@ -174,9 +175,29 @@ config object.
 public get(key: string): any
 ```
 
+Get the value of a config key.
+
 ###### `key`<sup>Required</sup> <a name="key" id="@gemeentenijmegen/config.Config.get.parameter.key"></a>
 
 - *Type:* string
+
+the key to get.
+
+---
+
+##### `has` <a name="has" id="@gemeentenijmegen/config.Config.has"></a>
+
+```typescript
+public has(key: string): boolean
+```
+
+Check if a config key exists, without retrieving all referenced params.
+
+###### `key`<sup>Required</sup> <a name="key" id="@gemeentenijmegen/config.Config.has.parameter.key"></a>
+
+- *Type:* string
+
+the key to check.
 
 ---
 
