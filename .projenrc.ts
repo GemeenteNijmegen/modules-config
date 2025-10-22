@@ -20,7 +20,6 @@ const project = new GemeenteNijmegenCdkLib({
   name: '@gemeentenijmegen/config',
   projenrcTs: true,
   repository: 'GemeenteNijmegen/modules-config',
-  npmTrustedPublishing: true,
   gitIgnoreOptions: {
     ignorePatterns: [
       'cdk.out',
