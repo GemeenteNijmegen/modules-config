@@ -30,6 +30,117 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
+// node_modules/@gemeentenijmegen/utils/lib/AWS.js
+var require_AWS = __commonJS({
+  "node_modules/@gemeentenijmegen/utils/lib/AWS.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.AWS = void 0;
+    var client_secrets_manager_1 = require("@aws-sdk/client-secrets-manager");
+    var client_ssm_1 = require("@aws-sdk/client-ssm");
+    var AWS2 = class {
+      /**
+       * Retrieves a secret from the secrets store given an ARN
+       * Note: only string secrets are supported (binary values are ignored).
+       * @param arn
+       * @returns the secret as a string
+       */
+      static async getSecret(arn) {
+        const secretsManagerClient = new client_secrets_manager_1.SecretsManagerClient({});
+        const command = new client_secrets_manager_1.GetSecretValueCommand({ SecretId: arn });
+        const data = await secretsManagerClient.send(command);
+        if (data?.SecretString) {
+          return data.SecretString;
+        }
+        throw new Error("No secret value found");
+      }
+      /**
+       * Get a parameter from parameter store.
+       * @param {string} name Name of the ssm param
+       * @returns param value
+       */
+      static async getParameter(name) {
+        const client = new client_ssm_1.SSMClient({});
+        const command = new client_ssm_1.GetParameterCommand({ Name: name });
+        const data = await client.send(command);
+        if (data.Parameter?.Value) {
+          return data.Parameter?.Value;
+        }
+        throw new Error("No parameter value found");
+      }
+    };
+    exports2.AWS = AWS2;
+  }
+});
+
+// node_modules/@gemeentenijmegen/utils/lib/environmentVariables.js
+var require_environmentVariables = __commonJS({
+  "node_modules/@gemeentenijmegen/utils/lib/environmentVariables.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.environmentVariables = void 0;
+    function environmentVariables(keys, defaults = {}) {
+      const env = {};
+      keys.forEach((key) => {
+        const typedKey = key;
+        const value = process.env[typedKey] ?? defaults[typedKey] ?? "";
+        if (!value) {
+          throw new Error(`Environment variable ${typedKey} is missing`);
+        }
+        env[typedKey] = value;
+      });
+      return env;
+    }
+    exports2.environmentVariables = environmentVariables;
+  }
+});
+
+// node_modules/@gemeentenijmegen/utils/lib/authenticate.js
+var require_authenticate = __commonJS({
+  "node_modules/@gemeentenijmegen/utils/lib/authenticate.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.authenticate = void 0;
+    var AWS_1 = require_AWS();
+    var environmentVariables_1 = require_environmentVariables();
+    var ALLOWED_HEADERS = [
+      "X-Authorization",
+      "Authorization",
+      "authorization",
+      "x-api-key"
+    ];
+    var API_KEY = void 0;
+    async function authenticate(event) {
+      if (!API_KEY) {
+        const env = (0, environmentVariables_1.environmentVariables)(["API_KEY_ARN"]);
+        API_KEY = await AWS_1.AWS.getSecret(env.API_KEY_ARN);
+      }
+      if (!API_KEY) {
+        throw new Error("API_KEY was not loaded, is API_KEY_ARN env variable set?");
+      }
+      if (!event.headers) {
+        throw new Error("No headers avaialble to check for API key");
+      }
+      const usedHeader = ALLOWED_HEADERS.find((h) => event.headers[h] != void 0);
+      if (!usedHeader) {
+        throw new Error("No headers available to check for API key");
+      }
+      const header = event.headers[usedHeader];
+      if (!header) {
+        throw new Error("No Authorization header found in the request.");
+      }
+      if (!header.startsWith("Token ")) {
+        throw new Error("Authorization header must have a token prefix");
+      }
+      if (header.substring("Token ".length) === API_KEY) {
+        return true;
+      }
+      throw new Error("Invalid API Key");
+    }
+    exports2.authenticate = authenticate;
+  }
+});
+
 // node_modules/@gemeentenijmegen/utils/lib/Bsn.js
 var require_Bsn = __commonJS({
   "node_modules/@gemeentenijmegen/utils/lib/Bsn.js"(exports2) {
@@ -116,49 +227,6 @@ var require_Bsn = __commonJS({
       }
     };
     exports2.Bsn = Bsn;
-  }
-});
-
-// node_modules/@gemeentenijmegen/utils/lib/AWS.js
-var require_AWS = __commonJS({
-  "node_modules/@gemeentenijmegen/utils/lib/AWS.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.AWS = void 0;
-    var client_secrets_manager_1 = require("@aws-sdk/client-secrets-manager");
-    var client_ssm_1 = require("@aws-sdk/client-ssm");
-    var AWS2 = class {
-      /**
-       * Retrieves a secret from the secrets store given an ARN
-       * Note: only string secrets are supported (binary values are ignored).
-       * @param arn
-       * @returns the secret as a string
-       */
-      static async getSecret(arn) {
-        const secretsManagerClient = new client_secrets_manager_1.SecretsManagerClient({});
-        const command = new client_secrets_manager_1.GetSecretValueCommand({ SecretId: arn });
-        const data = await secretsManagerClient.send(command);
-        if (data?.SecretString) {
-          return data.SecretString;
-        }
-        throw new Error("No secret value found");
-      }
-      /**
-       * Get a parameter from parameter store.
-       * @param {string} name Name of the ssm param
-       * @returns param value
-       */
-      static async getParameter(name) {
-        const client = new client_ssm_1.SSMClient({});
-        const command = new client_ssm_1.GetParameterCommand({ Name: name });
-        const data = await client.send(command);
-        if (data.Parameter?.Value) {
-          return data.Parameter?.Value;
-        }
-        throw new Error("No parameter value found");
-      }
-    };
-    exports2.AWS = AWS2;
   }
 });
 
@@ -309,49 +377,31 @@ var require_Storage = __commonJS({
   }
 });
 
-// node_modules/@gemeentenijmegen/utils/lib/environmentVariables.js
-var require_environmentVariables = __commonJS({
-  "node_modules/@gemeentenijmegen/utils/lib/environmentVariables.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.environmentVariables = void 0;
-    function environmentVariables(keys, defaults = {}) {
-      const env = {};
-      keys.forEach((key) => {
-        const typedKey = key;
-        const value = process.env[typedKey] ?? defaults[typedKey] ?? "";
-        if (!value) {
-          throw new Error(`Environment variable ${typedKey} is missing`);
-        }
-        env[typedKey] = value;
-      });
-      return env;
-    }
-    exports2.environmentVariables = environmentVariables;
-  }
-});
-
 // node_modules/@gemeentenijmegen/utils/lib/index.js
 var require_lib = __commonJS({
   "node_modules/@gemeentenijmegen/utils/lib/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.environmentVariables = exports2.S3Storage = exports2.AWS = exports2.Bsn = void 0;
-    var Bsn_1 = require_Bsn();
-    Object.defineProperty(exports2, "Bsn", { enumerable: true, get: function() {
-      return Bsn_1.Bsn;
+    exports2.S3Storage = exports2.environmentVariables = exports2.Bsn = exports2.AWS = exports2.authenticate = void 0;
+    var authenticate_1 = require_authenticate();
+    Object.defineProperty(exports2, "authenticate", { enumerable: true, get: function() {
+      return authenticate_1.authenticate;
     } });
     var AWS_1 = require_AWS();
     Object.defineProperty(exports2, "AWS", { enumerable: true, get: function() {
       return AWS_1.AWS;
     } });
-    var Storage_1 = require_Storage();
-    Object.defineProperty(exports2, "S3Storage", { enumerable: true, get: function() {
-      return Storage_1.S3Storage;
+    var Bsn_1 = require_Bsn();
+    Object.defineProperty(exports2, "Bsn", { enumerable: true, get: function() {
+      return Bsn_1.Bsn;
     } });
     var environmentVariables_1 = require_environmentVariables();
     Object.defineProperty(exports2, "environmentVariables", { enumerable: true, get: function() {
       return environmentVariables_1.environmentVariables;
+    } });
+    var Storage_1 = require_Storage();
+    Object.defineProperty(exports2, "S3Storage", { enumerable: true, get: function() {
+      return Storage_1.S3Storage;
     } });
   }
 });
