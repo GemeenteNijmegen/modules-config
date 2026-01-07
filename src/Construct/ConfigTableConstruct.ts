@@ -60,7 +60,7 @@ export class ConfigTable extends Construct {
       encryptionKey: props.encryptionKey,
       encryption: props.encryptionKey ? TableEncryption.CUSTOMER_MANAGED : undefined,
       removalPolicy: props.removalPolicy,
-      pointInTimeRecovery: true,
+      pointInTimeRecoverySpecification: { pointInTimeRecoveryEnabled: true },
     });
   }
 }

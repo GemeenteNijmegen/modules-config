@@ -4,7 +4,7 @@ const project = new GemeenteNijmegenCdkLib({
   author: 'Gemeente Nijmegen',
   authorAddress: 'gemeente@nijmegen.nl',
   defaultReleaseBranch: 'main',
-  cdkVersion: '2.1.0',
+  cdkVersion: '2.233.0',
   devDeps: [
     '@gemeentenijmegen/projen-project-type',
   ],
@@ -24,6 +24,11 @@ const project = new GemeenteNijmegenCdkLib({
     ignorePatterns: [
       'cdk.out',
     ],
+  },
+  tsconfig: {
+    compilerOptions: {
+      isolatedModules: true,
+    },
   },
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // packageName: undefined,  /* The "name" in package.json. */
