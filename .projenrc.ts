@@ -4,7 +4,7 @@ const project = new GemeenteNijmegenCdkLib({
   author: 'Gemeente Nijmegen',
   authorAddress: 'gemeente@nijmegen.nl',
   defaultReleaseBranch: 'main',
-  cdkVersion: '2.1.0',
+  cdkVersion: '2.233.0',
   devDeps: [
     '@gemeentenijmegen/projen-project-type',
   ],
