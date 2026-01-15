@@ -58,4 +58,5 @@ tsconfig.json
 !/src/Construct/lambda/fillTable-function.ts
 !/.github/workflows/emergency.yml
 !/.github/workflows/auto-merge.yml
+!/.nvmrc
 !/.projenrc.ts

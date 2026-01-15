@@ -35,7 +35,7 @@ const project = new GemeenteNijmegenCdkLib({
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // packageName: undefined,  /* The "name" in package.json. */
 });
-// To prevent the runtime import from importing the entire CDK, we explicitly export 
+// To prevent the runtime import from importing the entire CDK, we explicitly export
 // the config or the cdk construct
 project.package.addField('exports', {
   './construct': {

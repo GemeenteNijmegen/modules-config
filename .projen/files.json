@@ -10,6 +10,7 @@
     ".github/workflows/release.yml",
     ".github/workflows/upgrade-acceptance.yml",
     ".gitignore",
+    ".nvmrc",
     ".projen/deps.json",
     ".projen/files.json",
     ".projen/tasks.json",
