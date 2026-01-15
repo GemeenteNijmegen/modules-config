@@ -16,6 +16,7 @@ the parameter/secret. Nested arns work as well.
 See demo/main.ts for a basic example. Using the construct:
 
 ```
+import { ConfigTable } from '@gemeentenijmegen/aws-config/construct';
 const configTable = new ConfigTable(scope, 'config', {
   config: {
     myKey: 'myvalue2',
@@ -33,6 +34,7 @@ const configTable = new ConfigTable(scope, 'config', {
 Using the runtime code:
 
 ```
+import { Config } from '@gemeentenijmegen/aws-config/config';
 const config = new Config();
 await config.get('myKey'); // 'myvalue2'
 await config.get('secret'); // secret value from provided arn
