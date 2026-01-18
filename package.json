@@ -10,6 +10,8 @@
     "bundle": "npx projen bundle",
     "bundle:Construct/lambda/fillTable.lambda": "npx projen bundle:Construct/lambda/fillTable.lambda",
     "bundle:Construct/lambda/fillTable.lambda:watch": "npx projen bundle:Construct/lambda/fillTable.lambda:watch",
+    "bundle:experiment/lambda/update-config.lambda": "npx projen bundle:experiment/lambda/update-config.lambda",
+    "bundle:experiment/lambda/update-config.lambda:watch": "npx projen bundle:experiment/lambda/update-config.lambda:watch",
     "clobber": "npx projen clobber",
     "compat": "npx projen compat",
     "compile": "npx projen compile",

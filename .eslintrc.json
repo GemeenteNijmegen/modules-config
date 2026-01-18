@@ -154,6 +154,7 @@
           "**/test/**",
           "**/build-tools/**",
           "src/Construct/lambda/fillTable.lambda.ts",
+          "src/experiment/lambda/update-config.lambda.ts",
           ".projenrc.ts",
           "projenrc/**/*.ts"
         ],
