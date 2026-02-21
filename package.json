@@ -45,7 +45,7 @@
     "@typescript-eslint/parser": "^8",
     "aws-cdk-lib": "2.233.0",
     "commit-and-tag-version": "^12",
-    "constructs": "10.0.5",
+    "constructs": "10.5.1",
     "esbuild": "^0.27.3",
     "eslint": "^9",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -64,10 +64,10 @@
   },
   "peerDependencies": {
     "aws-cdk-lib": "^2.233.0",
-    "constructs": "^10.0.5"
+    "constructs": "^10.5.1"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.994.0",
+    "@aws-sdk/client-dynamodb": "^3.995.0",
     "@gemeentenijmegen/utils": "^0.0.38",
     "@types/aws-lambda": "^8.10.160"
   },
