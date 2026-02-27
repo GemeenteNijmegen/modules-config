@@ -40,7 +40,7 @@
     "@gemeentenijmegen/projen-project-type": "^1.12.1",
     "@stylistic/eslint-plugin": "^2",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.13",
+    "@types/node": "^24.10.15",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "aws-cdk-lib": "2.233.0",
@@ -67,9 +67,9 @@
     "constructs": "^10.5.1"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.998.0",
+    "@aws-sdk/client-dynamodb": "^3.999.0",
     "@gemeentenijmegen/utils": "^0.0.38",
-    "@types/aws-lambda": "^8.10.160"
+    "@types/aws-lambda": "^8.10.161"
   },
   "bundledDependencies": [
     "@aws-sdk/client-dynamodb",
