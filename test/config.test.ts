@@ -10,10 +10,10 @@ class MockConfigProvider implements IConfigProvider {
       this.store.set(key, JSON.stringify(sampleObject[key]));
     }
   }
-  getSecret(_arn: string): Promise<any> {
+  getSecret(): Promise<any> {
     return Promise.resolve('secretvalue');
   }
-  getParameter(_arn: string): Promise<any> {
+  getParameter(): Promise<any> {
     return Promise.resolve('parametervalue');
   }
   async get(key: string): Promise<any> {
