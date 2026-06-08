@@ -37,10 +37,10 @@
     "organization": false
   },
   "devDependencies": {
-    "@gemeentenijmegen/projen-project-type": "^1.12.5",
+    "@gemeentenijmegen/projen-project-type": "^1.13.1",
     "@stylistic/eslint-plugin": "^2",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.12.2",
+    "@types/node": "^24.13.1",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "aws-cdk-lib": "2.233.0",
@@ -48,17 +48,17 @@
     "constructs": "10.5.1",
     "esbuild": "^0.28.0",
     "eslint": "^9",
-    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
-    "jest": "^30.3.0",
-    "jest-junit": "^16",
+    "jest": "^30.4.2",
+    "jest-junit": "^17",
     "jsii": "~5.9.0",
-    "jsii-diff": "^1.128.0",
+    "jsii-diff": "^1.134.0",
     "jsii-docgen": "^10.5.0",
-    "jsii-pacmak": "^1.128.0",
+    "jsii-pacmak": "^1.134.0",
     "jsii-rosetta": "~5.9.0",
-    "projen": "^0.99.27",
-    "ts-jest": "^29.4.9",
+    "projen": "^0.99.71",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
@@ -67,9 +67,9 @@
     "constructs": "^10.5.1"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.1033.0",
+    "@aws-sdk/client-dynamodb": "^3.1063.0",
     "@gemeentenijmegen/utils": "^0.0.38",
-    "@types/aws-lambda": "^8.10.161"
+    "@types/aws-lambda": "^8.10.162"
   },
   "bundledDependencies": [
     "@aws-sdk/client-dynamodb",
@@ -79,6 +79,12 @@
   "keywords": [
     "cdk"
   ],
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "onFail": "ignore"
+    }
+  },
   "main": "lib/index.js",
   "license": "EUPL-1.2",
   "publishConfig": {
