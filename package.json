@@ -7,6 +7,7 @@
   "scripts": {
     "build": "projen build",
     "bump": "projen bump",
+    "bump:releasable-commits": "projen bump:releasable-commits",
     "bundle": "projen bundle",
     "bundle:Construct/lambda/fillTable.lambda": "projen bundle:Construct/lambda/fillTable.lambda",
     "bundle:Construct/lambda/fillTable.lambda:watch": "projen bundle:Construct/lambda/fillTable.lambda:watch",
@@ -44,14 +45,14 @@
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "aws-cdk-lib": "2.233.0",
-    "commit-and-tag-version": "^12",
-    "constructs": "10.5.1",
+    "commit-and-tag-version": "^13",
+    "constructs": "10.8.1",
     "esbuild": "^0.28.0",
     "eslint": "^9",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "jest": "^30.3.0",
-    "jest-junit": "^16",
+    "jest-junit": "^17",
     "jsii": "~5.9.0",
     "jsii-diff": "^1.128.0",
     "jsii-docgen": "^10.5.0",
@@ -79,8 +80,15 @@
   "keywords": [
     "cdk"
   ],
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "onFail": "ignore"
+    }
+  },
   "main": "lib/index.js",
   "license": "EUPL-1.2",
+  "stability": "stable",
   "publishConfig": {
     "access": "public"
   },
@@ -125,20 +133,17 @@
       "^.+\\.[t]sx?$": [
         "ts-jest",
         {
-          "tsconfig": "tsconfig.dev.json"
+          "tsconfig": "test/tsconfig.json"
         }
       ]
     }
   },
   "types": "lib/index.d.ts",
-  "stability": "stable",
   "jsii": {
     "outdir": "dist",
     "targets": {},
-    "tsc": {
-      "outDir": "lib",
-      "rootDir": "src"
-    }
+    "tsconfig": "tsconfig.json",
+    "validateTsconfig": "strict"
   },
   "exports": {
     "./construct": {
