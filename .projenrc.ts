@@ -8,6 +8,7 @@ const project = new GemeenteNijmegenCdkLib({
   devDeps: [
     '@gemeentenijmegen/projen-project-type',
     'aws-cdk-lib',
+    'aws-sdk-client-mock',
   ],
   bundledDeps: [
     '@types/aws-lambda',
@@ -21,6 +22,9 @@ const project = new GemeenteNijmegenCdkLib({
   name: '@gemeentenijmegen/config',
   projenrcTs: true,
   repository: 'GemeenteNijmegen/modules-config',
+  gitignore: [
+    '.ai',
+  ],
   gitIgnoreOptions: {
     ignorePatterns: [
       'cdk.out',
