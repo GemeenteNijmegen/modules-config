@@ -22,15 +22,38 @@
 - Before finishing: `npx projen build` passes and the self-review (below) is done.
 - PRs are merged to `main` after review by someone else. You may commit on your feature branch. Pushing and opening the PR is left to the reviewer unless asked.
 - Never merge or approve a PR, never push to `main` or release branches, never create tags, and never publish.
-- If the task is ambiguous, or the code contradicts these instructions, ask instead of guessing.
 
-### When working from a plan
+### Committing
 
-- If you are given a plan, treat it as a working document outside the repository (gitignored under `.ai/`, currently `.ai/plans/*`). Work through it one PR at a time.
-- Each plan lives in its own file.
-- Keep each PR limited to what the plan says for that PR.
+- Commit only the paths that belong to the current change. Do not use `git add -A`, `git add .` or `git commit -a`.
+- Stage by explicit path, check with `git diff --cached --stat`, and commit with explicit paths (`git commit -m "..." -- <paths>`) so that anything else already staged stays out of the commit.
+- If the branch or working tree contains staged or modified changes that are not yours, leave them exactly as they are. Do not unstage, reset, stash, discard or commit them.
+- If a path that belongs to your change also contains someone else's changes and you cannot separate them cleanly, stop and ask.
+
+## Before you start
+
+The time to ask questions is before the work begins, not during it.
+
+- Before starting, make sure the work is as clear as possible: goal, scope, expected behavior, public API impact, and how you will verify it.
+- Ask all open questions up front, in one batch. Do not start while something that could change the approach is still unclear.
+- If the task contradicts these instructions or the code, raise it before starting.
+- Once the questions are answered, work without interrupting the reviewer.
+
+## While working
+
+If something unexpected comes up after the work has started, do not stop for it unless it is blocking or irreversible. Continue with the option you recommend and log the decision.
+
+- Log every non-trivial decision (a deviation from the plan, an ambiguity you resolved, a trade-off, anything the reviewer might disagree with) in the decision log, with: the situation, what you decided, why, and the alternatives you considered.
+- The decision log lives in `.ai/decisions/` (gitignored), in a file with the same name as the plan. Without a plan, use `.ai/decisions/<YYYY-MM-DD>-<kebab-topic>.md`. Append entries; do not rewrite earlier ones.
+- Stop and ask only when the problem blocks you, the decision cannot be undone, or it affects the public API in a way the reviewer did not expect.
+- Summarize the notable decisions when you report back, so they can be reviewed once the work is done.
+
+## Working from a plan
+
+- A plan is a working document. Plans live in `.ai/plans/` (gitignored), never in `docs/`.
+- Plan files are named `<YYYY-MM-DD>-<kebab-topic>.md`, for example `2026-10-30-bucket-encryption.md`. The decision log for a plan has the same file name in `.ai/decisions/`.
+- Work through the plan one PR at a time and keep each PR limited to what the plan says for it.
 - Stop after each PR is complete and wait for review. Do not start the next PR on your own.
-- If the plan is ambiguous, contradicts the code, or a step seems wrong, ask instead of guessing.
 - Plans are never committed and never referenced (see the next section).
 
 ## Plans never leak into the repository
@@ -41,6 +64,7 @@ The plan is a working document for you and the reviewer. It is never committed a
 - No comments that point at other PRs or future work ("will be replaced in a later PR", "see PR 5"). Either do the work now or leave it out.
 - Make sure `.ai/` is in `.gitignore`. Check `git status` before committing: no plan files staged.
 - Write commit messages and PR descriptions so that they make sense to someone who has never seen the plan.
+- Branch names describe the change (`feat/bucket-encryption`), never the plan or a PR number (`feat/pr-3`).
 
 ## Documentation
 
@@ -74,7 +98,8 @@ The plan is a working document for you and the reviewer. It is never committed a
 
 - Public API (exported constructs and props) is a contract for consumers. Do not rename, remove or change the meaning of exported things unless the plan says so, and flag it clearly in your summary as a breaking change.
 - Keep props minimal and sensible by default. Do not expose an option just because it is possible.
-- If this library is published through jsii, exported API must stay jsii-compatible (no unsupported TypeScript constructs in exported signatures). The build will tell you; do not work around jsii errors without asking.
+- The cdk-lib and ts-lib project types are jsii projects, so jsii's strict typing rules apply to everything exported. Common ones: no method overloading, no generics, no tuple or function types in exported signatures; props are `readonly` data interfaces whose names do not start with `I`.
+- The jsii compiler is the source of truth. If it rejects something, fix the design. Do not work around it with casts, `any` or suppressions without asking.
 - Tests: use assertions on the synthesized template (`Template.fromStack`) for behavior that matters. Avoid snapshot-only tests that nobody can review, and do not test implementation details.
 
 ## Self-review before declaring done
@@ -88,6 +113,7 @@ When a PR's work is complete and `npx projen build` passes, review your own diff
 5. Public API: any exported change, and is it intended and documented?
 6. Tests: is the new or changed behavior covered by a test that would fail if it broke?
 7. Leaks: no plan files, no references to the plan in code, comments, docs or commit messages.
+8. Docs: updated for any behavior or API change, written in `docs/`, and understandable by someone who has never seen the plan or any AI context.
 
 Classify findings:
 
@@ -111,7 +137,7 @@ When a PR is done, reply briefly with:
 - What changed, in 2-4 sentences
 - Result of `npx projen build`
 - Self-review findings that you left unfixed (should-fix/nit), and anything you noticed outside the scope
-- Open questions or decisions that need the reviewer
+- Notable decisions from the decision log, and the open questions or decisions that need the reviewer
 
 Do not narrate every step or restate the plan.
 
